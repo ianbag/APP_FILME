@@ -1,1 +1,23 @@
-<p>movie-detail-add works!</p>
+<div class="jumbotron-fluid shadow p-3">
+    <h2 class="text-center">
+        <button class="btn btn-light mt-2 mb-3 float-left" [routerLink]="['/movie']">Back</button>
+        Add Movie Detail
+    </h2>
+    <hr>
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit(movieForm.value)">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" class="form-control" placeholder="Nome" formControlName="nome">
+        </div>
+        <div class="form-group">
+            <label for="genero">Gênero</label>
+            <input type="text" name="genero" class="form-control" placeholder="Gênero" formControlName="genero">
+        </div>
+        <div class="form-group">
+            <label for="dataLancamento">Data de Lançamento</label>
+            <input type="date" name="dataLancamento" class="form-control" max="2999-12-31"
+                formControlName="dataLancamento">
+        </div>
+        <button type="submit" class="btn btn-success">Save Movie</button>
+    </form>
+</div>
