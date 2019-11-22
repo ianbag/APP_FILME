@@ -12,7 +12,7 @@
             <b>Gênero: </b> {{movie.genero}}
         </div>
         <div class="col-md-12">
-            <b>Data de Lançamento: </b> {{movie.dataLancamento}}
+            <b>Data de Lançamento: </b> {{movie.dataLancamento | date: 'dd/MM/yyy'}}
         </div>
     </div>
 </div>

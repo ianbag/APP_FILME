@@ -16,7 +16,7 @@
             <tr *ngFor="let movie of movies">
                 <td>{{movie.nome}}</td>
                 <td>{{movie.genero}}</td>
-                <td>{{movie.dataLancamento}}</td>
+                <td>{{movie.dataLancamento | date: 'dd/MM/yyy'}}</td>
                 <td>
                     <button class="btn btn-warning btn-sm m-1" [routerLink]="['/movie/edit', movie.mvId]" >Edit</button>
                     <button class="btn btn-danger btn-sm m-1">Delete</button>
