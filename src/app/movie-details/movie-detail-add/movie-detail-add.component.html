@@ -7,11 +7,13 @@
     <form [formGroup]="movieForm" (ngSubmit)="onSubmit(movieForm.value)">
         <div class="form-group">
             <label for="nome">Nome</label>
-            <input type="text" name="nome" class="form-control" placeholder="Nome" formControlName="nome">
+            <input type="text" name="nome" class="form-control" placeholder="Informe o nome do filme"
+                formControlName="nome">
         </div>
         <div class="form-group">
             <label for="genero">Gênero</label>
-            <input type="text" name="genero" class="form-control" placeholder="Gênero" formControlName="genero">
+            <input type="text" name="genero" class="form-control" placeholder="Informe o gênero do filme"
+                formControlName="genero">
         </div>
         <div class="form-group">
             <label for="dataLancamento">Data de Lançamento</label>

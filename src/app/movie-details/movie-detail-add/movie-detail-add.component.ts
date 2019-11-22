@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MovieDetailService } from 'src/app/shared/movie-detail.service';
 import { MovieDetail } from 'src/app/shared/movie-detail.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-detail-add',
@@ -17,7 +18,8 @@ export class MovieDetailAddComponent implements OnInit {
   constructor(
     private movieDetailService: MovieDetailService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -31,13 +33,14 @@ export class MovieDetailAddComponent implements OnInit {
   onSubmit(movieData: MovieDetail) {
     this.movieDetailService.post(movieData).subscribe(
       res => {
-        this.toastr.success(`Movie ${movieData.Nome} added!`, 'Success')
+        this.toastr.success(`Movie ${movieData.Nome} added!`, 'Success');
         this.movieForm.reset();
+        this.router.navigate(['/movie']);
         console.warn('movie success add', res)
       },
       error => {
-        this.toastr.error(`Ops... there was an error`, 'Error')
-        console.warn('error', error)
+        this.toastr.error(`Ops... there was an error`, 'Error');
+        console.warn('error', error);
       }
     )
   }

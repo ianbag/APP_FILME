@@ -13,6 +13,7 @@ import { MovieDetailAddComponent } from './movie-details/movie-detail-add/movie-
 import { MovieDetailEditComponent } from './movie-details/movie-detail-edit/movie-detail-edit.component';
 import { MenuComponent } from './shared/layout/menu/menu.component';
 import { FooterComponent } from './shared/layout/footer/footer.component';
+import { InputComponent } from './shared/input/input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
     MovieDetailAddComponent,
     MovieDetailEditComponent,
     MenuComponent,
-    FooterComponent
+    FooterComponent,
+    InputComponent
   ],
   imports: [
     BrowserModule,
