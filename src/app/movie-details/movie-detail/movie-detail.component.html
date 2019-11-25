@@ -6,13 +6,13 @@
     <hr>
     <div class="m-5 text-center">
         <div class="col-md-12">
-            <b>Nome: </b> {{movie.nome}}
+            <b>Nome: </b> {{movie?.nome}}
         </div>
         <div class="col-md-12">
-            <b>Gênero: </b> {{movie.genero}}
+            <b>Gênero: </b> {{movie?.genero}}
         </div>
         <div class="col-md-12">
-            <b>Data de Lançamento: </b> {{movie.dataLancamento | date: 'dd/MM/yyy'}}
+            <b>Data de Lançamento: </b> {{movie?.dataLancamento | date: 'dd/MM/yyy'}}
         </div>
     </div>
 </div>

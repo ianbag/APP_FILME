@@ -24,5 +24,4 @@ export class MovieDetailsComponent implements OnInit {
       this.movies = movies
     )
   }
-
 }
