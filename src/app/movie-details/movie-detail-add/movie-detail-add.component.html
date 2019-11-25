@@ -1,7 +1,9 @@
 <div class="jumbotron-fluid shadow p-3">
     <h2 class="text-center">
-        <button class="btn btn-light mt-2 mb-3 float-left" [routerLink]="['/movie']">Back</button>
-        Add Movie Detail
+        <button class="btn btn-light mt-2 mb-3 float-left" [routerLink]="['/movie']">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </button>
+        Adicionar Filme
     </h2>
     <hr>
     <form [formGroup]="movieForm" (ngSubmit)="onSubmit(movieForm.value)" novalidates>
