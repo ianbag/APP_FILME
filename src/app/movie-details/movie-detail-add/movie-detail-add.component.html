@@ -4,22 +4,40 @@
         Add Movie Detail
     </h2>
     <hr>
-    <form [formGroup]="movieForm" (ngSubmit)="onSubmit(movieForm.value)">
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit(movieForm.value)" novalidates>
         <div class="form-group">
-            <label for="nome">Nome</label>
+            <label for="nome">Nome <span class="text-danger">*</span></label>
             <input type="text" name="nome" class="form-control" placeholder="Informe o nome do filme"
-                formControlName="nome">
+                formControlName="nome" maxlength="100" [(ngModel)]="movieForm.nome">
+            <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="invalid-feedback">
+                <div *ngIf="nome.errors.required">
+                    Nome é obrigatório.
+                </div>
+                <div *ngIf="nome.errors.minlength">
+                    Nome deve possuir mais de 3 caracteres.
+                </div>
+            </div>
         </div>
         <div class="form-group">
-            <label for="genero">Gênero</label>
+            <label for="genero">Gênero <span class="text-danger">*</span></label>
             <input type="text" name="genero" class="form-control" placeholder="Informe o gênero do filme"
-                formControlName="genero">
+                formControlName="genero" [(ngModel)]="movieForm.genero" maxlength="50">
+            <div *ngIf="genero.invalid && genero.touched" class="invalid-feedback">
+                <div *ngIf="genero.errors.required">
+                    Gênero é obrigatório.
+                </div>
+            </div>
         </div>
         <div class="form-group">
-            <label for="dataLancamento">Data de Lançamento</label>
+            <label for="dataLancamento">Data de Lançamento <span class="text-danger">*</span></label>
             <input type="date" name="dataLancamento" class="form-control" max="2999-12-31"
                 formControlName="dataLancamento">
+            <div *ngIf="dataLancamento.invalid && dataLancamento.touched" class="invalid-feedback">
+                <div *ngIf="dataLancamento.errors.required">
+                    Data de lançamento é obrigatório.
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-success">Save Movie</button>
+        <button type="submit" class="btn btn-success" [disabled]="movieForm.invalid">Save Movie</button>
     </form>
 </div>

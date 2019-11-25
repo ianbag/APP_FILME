@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MovieDetailService } from 'src/app/shared/movie-detail.service';
 import { MovieDetail } from 'src/app/shared/movie-detail.model';
 import { Router } from '@angular/router';
+import { ValidateInputService } from 'src/app/shared/validate-input.service';
 
 @Component({
   selector: 'app-movie-detail-add',
@@ -19,14 +20,15 @@ export class MovieDetailAddComponent implements OnInit {
     private movieDetailService: MovieDetailService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private validateInput: ValidateInputService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.movieForm = this.formBuilder.group({
-      nome: ['', Validators.required, Validators.maxLength],
-      genero: ['', Validators.required],
-      dataLancamento: ['', Validators.required]
+      nome: ['', [Validators.required, Validators.minLength(3)]],
+      genero: ['', [Validators.required]],
+      dataLancamento: ['', [Validators.required]]
     });
   }
 
@@ -44,6 +46,12 @@ export class MovieDetailAddComponent implements OnInit {
       }
     )
   }
+
+  get nome() { return this.movieForm.get('nome') }
+
+  get genero() { return this.movieForm.get('genero') }
+
+  get dataLancamento() { return this.movieForm.get('dataLancamento') }
 
 
 }
