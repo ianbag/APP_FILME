@@ -33,13 +33,12 @@ export class MovieDetailAddComponent implements OnInit {
   onSubmit(movieData: MovieDetail) {
     this.movieDetailService.post(movieData).subscribe(
       res => {
-        this.toastr.success(`Movie ${movieData.Nome} added!`, 'Success');
+        this.toastr.success(`Filme ${res.nome} adicionado!`, 'Sucesso');
         this.movieForm.reset();
         this.router.navigate(['/movie']);
-        console.warn('movie success add', res)
       },
       error => {
-        this.toastr.error(`Ops... there was an error`, 'Error');
+        this.toastr.error(`Houve algum problema ao adicionar`, 'Erro');
         console.warn('error', error);
       }
     )
