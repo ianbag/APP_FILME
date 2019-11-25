@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MovieDetailService } from 'src/app/shared/movie-detail.service';
 import { MovieDetail } from 'src/app/shared/movie-detail.model';
 import { Router } from '@angular/router';
-import { ValidateInputService } from 'src/app/shared/validate-input.service';
 
 @Component({
   selector: 'app-movie-detail-add',
@@ -21,7 +20,6 @@ export class MovieDetailAddComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
-    private validateInput: ValidateInputService
   ) { }
 
   ngOnInit(): void {
