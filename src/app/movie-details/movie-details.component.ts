@@ -22,9 +22,7 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   listMovies() {
-    this.movieDetailService.get().subscribe(movies =>
-      this.movies = movies
-    )
+    this.movieDetailService.get().subscribe(movies => this.movies = movies)
   }
 
   deleteMovie(id: number) {
