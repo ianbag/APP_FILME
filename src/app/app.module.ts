@@ -15,6 +15,7 @@ import { MovieDetailEditComponent } from './movie-details/movie-detail-edit/movi
 import { MenuComponent } from './shared/layout/menu/menu.component';
 import { FooterComponent } from './shared/layout/footer/footer.component';
 import { InputComponent } from './shared/input/input.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { InputComponent } from './shared/input/input.component';
     SweetAlert2Module.forRoot()
     
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
