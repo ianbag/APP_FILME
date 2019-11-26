@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
 import { MovieDetailService } from 'src/app/shared/movie-detail.service';
 import { MovieDetail } from 'src/app/shared/movie-detail.model';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-movie-detail-add',
   templateUrl: './movie-detail-add.component.html',
   styleUrls: []
 })
-export class MovieDetailAddComponent implements OnInit {
+export class MovieDetailAddComponent implements OnInit, OnDestroy {
 
-  movieForm: FormGroup;
+  private unsubscribe$ = new Subject<void>();
+  private movieForm: FormGroup;
 
   constructor(
     private movieDetailService: MovieDetailService,
@@ -31,17 +34,19 @@ export class MovieDetailAddComponent implements OnInit {
   }
 
   onSubmit(movieData: MovieDetail) {
-    this.movieDetailService.post(movieData).subscribe(
-      res => {
-        this.toastr.success(`Filme ${res.nome} adicionado!`, 'Sucesso');
-        this.movieForm.reset();
-        this.router.navigate(['/movie']);
-      },
-      error => {
-        this.toastr.error(`Houve algum problema ao adicionar`, 'Erro');
-        console.warn('error', error);
-      }
-    )
+    this.movieDetailService.post(movieData)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        res => {
+          this.toastr.success(`Filme ${res.nome} adicionado!`, 'Sucesso');
+          this.movieForm.reset();
+          this.router.navigate(['/movie']);
+        },
+        error => {
+          this.toastr.error(`Houve algum problema ao adicionar`, 'Erro');
+          console.warn('error', error);
+        }
+      )
   }
 
   get nome() { return this.movieForm.get('nome') }
@@ -50,5 +55,9 @@ export class MovieDetailAddComponent implements OnInit {
 
   get dataLancamento() { return this.movieForm.get('dataLancamento') }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }
