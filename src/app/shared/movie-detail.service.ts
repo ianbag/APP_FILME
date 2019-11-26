@@ -27,4 +27,8 @@ export class MovieDetailService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.URL_API}/${id}`);
   }
+
+  put(movie: MovieDetail, id: number): Observable<any> {
+    return this.http.put<any>(`${this.URL_API}/${id}`, movie)
+  }
 }
