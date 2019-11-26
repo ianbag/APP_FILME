@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { MovieDetailService } from 'src/app/shared/movie-detail.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MovieDetail } from 'src/app/shared/movie-detail.model';
 import { DatePipe } from '@angular/common';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { MovieDetailService } from 'src/app/shared/movie-detail.service';
+import { MovieDetail } from 'src/app/shared/movie-detail.model';
+
 
 @Component({
   selector: 'app-movie-detail-edit',
   templateUrl: './movie-detail-edit.component.html',
   styleUrls: []
 })
-export class MovieDetailEditComponent implements OnInit {
+export class MovieDetailEditComponent implements OnInit, OnDestroy {
 
-  movieForm: FormGroup;
-  movie: any
+  private unsubscribe$ = new Subject<void>();
+  private movieForm: FormGroup;
+  private movie: any;
 
   constructor(
     private movieDetailService: MovieDetailService,
@@ -22,13 +27,14 @@ export class MovieDetailEditComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private subscription = Subscription
   ) { }
 
   ngOnInit(): void {
     this.getMovieById();
     this.movieForm = this.formBuilder.group({
-      nome: ['teste', [Validators.required, Validators.minLength(3)]],
+      nome: ['', [Validators.required, Validators.minLength(3)]],
       genero: ['', [Validators.required]],
       dataLancamento: ['', [Validators.required]]
     });
@@ -36,26 +42,29 @@ export class MovieDetailEditComponent implements OnInit {
 
   getMovieById() {
     this.movieDetailService.getById(this.route.snapshot.params.id)
-      .subscribe(async res => {
-        this.movie = await res
-        this.movie.dataLancamento = await this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(res => {
+        this.movie = res
+        this.movie.dataLancamento = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
         this.movieForm.patchValue(res);
       })
   }
 
-  async onSubmit(movieData: MovieDetail) {
-    movieData.MVId = await Number(this.route.snapshot.params.id)
-    this.movieDetailService.put(movieData, this.route.snapshot.params.id).subscribe(
-      res => {
-        this.toastr.success(`Filme ${movieData['nome']} editado!`, 'Sucesso');
-        this.movieForm.reset();
-        this.router.navigate(['/movie']);
-      },
-      error => {
-        this.toastr.error(`Houve algum problema ao editar`, 'Erro');
-        console.warn('error', error);
-      }
-    )
+  onSubmit(movieData: MovieDetail) {
+    movieData.MVId = Number(this.route.snapshot.params.id)
+    this.movieDetailService.put(movieData, this.route.snapshot.params.id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        res => {
+          this.toastr.success(`Filme ${movieData['nome']} editado!`, 'Sucesso');
+          this.movieForm.reset();
+          this.router.navigate(['/movie']);
+        },
+        error => {
+          this.toastr.error(`Houve algum problema ao editar`, 'Erro');
+          console.warn('error', error);
+        }
+      )
   }
 
   get nome() { return this.movieForm.get('nome') }
@@ -63,5 +72,10 @@ export class MovieDetailEditComponent implements OnInit {
   get genero() { return this.movieForm.get('genero') }
 
   get dataLancamento() { return this.movieForm.get('dataLancamento') }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }
